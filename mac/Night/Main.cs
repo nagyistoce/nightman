@@ -19,8 +19,6 @@ namespace Night
 				NSApplication.SharedApplication.Delegate = new AppDelegate ();
 				NSApplication.Main (args);
 			}
-
-
 		}
 	}
 

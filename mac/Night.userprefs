@@ -1,12 +1,11 @@
-﻿<Properties MonoDevelop.MonoMac.LastXamMacNagTime="01/03/2014 11:16:46 PM">
+﻿<Properties MonoDevelop.MonoMac.LastXamMacNagTime="02/03/2014 10:17:41 PM">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Night/Classes/TileEngine/TileMap.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Night/GameScene.cs">
     <Files>
-      <File FileName="Night/GameScene.cs" Line="142" Column="5" />
-      <File FileName="Night/Classes/Camera2D.cs" Line="72" Column="4" />
-      <File FileName="Night/Classes/TileEngine/Tile.cs" Line="12" Column="36" />
-      <File FileName="Night/Classes/TileEngine/MapCell.cs" Line="33" Column="4" />
-      <File FileName="Night/Classes/TileEngine/TileMap.cs" Line="19" Column="28" />
+      <File FileName="Night/GameScene.cs" Line="60" Column="26" />
+      <File FileName="Night/Classes/CrossHair.cs" Line="24" Column="74" />
+      <File FileName="Night/Classes/Player.cs" Line="58" Column="4" />
+      <File FileName="Night/Main.cs" Line="21" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -14,5 +13,7 @@
       <Breakpoint file="/Users/samdesrochers/Projects/Night/Night/Classes/Camera.cs" line="78" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="Night/GameScene.cs" line="113" offsetX="375" offsetY="1680" expression="mouseState" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
 </Properties>

@@ -82,6 +82,7 @@
     <Compile Include="Classes\TileEngine\Tile.cs" />
     <Compile Include="Classes\TileEngine\MapCell.cs" />
     <Compile Include="Classes\TileEngine\TileMap.cs" />
+    <Compile Include="Classes\CrossHair.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -91,18 +92,24 @@
     <Folder Include="Classes\" />
     <Folder Include="Content\" />
     <Folder Include="Classes\TileEngine\" />
-    <Folder Include="Content\Maps\" />
     <Folder Include="Maps\" />
+    <Folder Include="Content\Fonts\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Content\mainbackground.png" />
     <BundleResource Include="Content\shipAnimation.png" />
     <BundleResource Include="Content\part1_tileset.png" />
     <BundleResource Include="Content\part2_tileset.png" />
+    <BundleResource Include="Content\crosshair.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Maps\map.cvs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\font.spritefont">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Gettext-ScanForTranslations>False</Gettext-ScanForTranslations>
+    </Content>
+    <Content Include="Content\myfont.spritefont" />
   </ItemGroup>
 </Project>

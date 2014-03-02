@@ -28,13 +28,20 @@ namespace Night
 
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
+		//SpriteFont font;
 		Camera2D camera2d;
 
 		// Keyboard states used to determine key presses
 		KeyboardState currentKeyboardState;
 		//KeyboardState previousKeyboardState;
+		MouseState mouseState;
+		
+
+		CrossHair crossHair;
 
 		Player player;
+
+		Texture2D cross;
 
 		// Textures Test ----
 
@@ -57,9 +64,8 @@ namespace Night
 			graphics.PreferredBackBufferWidth = 1440;
 			graphics.PreferredBackBufferHeight = 900;
 
-
 			camera2d = new Camera2D ();
-
+			crossHair = new CrossHair ();
 		
 			player = new Player ();
 
@@ -71,6 +77,9 @@ namespace Night
 			// Create a new SpriteBatch, which can be use to draw textures.
 			spriteBatch = new SpriteBatch (graphics.GraphicsDevice);
 
+			// Create font batch
+			//SpriteFont bla = Content.Load<SpriteFont>("myfont");
+
 			// Camera loading
 			Vector2 viewPort = new Vector2 (graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
 			camera2d.Initialize (viewPort);
@@ -80,15 +89,20 @@ namespace Night
 			Tile.TileSetTexture = Content.Load<Texture2D>("part2_tileset");
 			tileMap = new TileMap (viewPort);
 
+			// CrossHair Loading
+			crossHair.Texture = Content.Load<Texture2D>("crosshair");
+
 			// Load the player resources
 			Animation playerAnimation = new Animation();
 			Texture2D playerTexture = Content.Load<Texture2D>("shipAnimation");
 			playerAnimation.Initialize(playerTexture, Vector2.Zero, 115, 69, 8, 30, Color.White, 0.75f, true);
 
 			// Player loading
-			Vector2 playerPosition = new Vector2 (900, 550);
+			Vector2 playerPosition = new Vector2 (128*Tile.TileWidth/2, 800);
 			player.Initialize(playerAnimation, playerPosition);
 			camera2d.Position = playerPosition;
+
+			//crossHair.CrossAnim = playerAnimation;
 
 			// Other
 			tileMap.LoadFile ();
@@ -102,11 +116,11 @@ namespace Night
 		{
 			//previousKeyboardState = currentKeyboardState;
 			currentKeyboardState = Keyboard.GetState();
+			mouseState = Mouse.GetState ();
 
 			UpdatePlayer (gameTime);
-
-			camera2d.Update (gameTime);
-			camera2d.Focus = player.Position;
+			UpdateCamera (gameTime);
+			UpdateCrossHair ();
 
 			base.Update (gameTime);
 		}
@@ -114,7 +128,8 @@ namespace Night
 		private void UpdatePlayer(GameTime gameTime)
 		{
 			player.Update(gameTime);
-			float playerMoveSpeed = 6.0f;
+
+			float playerMoveSpeed = 12.0f;
 
 			// Use the Keyboard / Dpad
 			if (currentKeyboardState.IsKeyDown(Keys.Left)) {
@@ -130,26 +145,57 @@ namespace Night
 				player.Position.Y += playerMoveSpeed;
 			}
 		}
+
+		private void UpdateCrossHair()
+		{
+			crossHair.Position = camera2d.getWorldPosition (new Vector2 (mouseState.X, mouseState.Y));
+		}
+
+		private void UpdateCamera(GameTime gameTime)
+		{
+			camera2d.Update (gameTime, player.Position);
+		}
 			
 		protected override void Draw (GameTime gameTime)
 		{
 			// Clear the backbuffer
 			graphics.GraphicsDevice.Clear (Color.CornflowerBlue);
 
-			spriteBatch.Begin(SpriteSortMode.BackToFront,
+			spriteBatch.Begin(SpriteSortMode.Deferred,
 				BlendState.AlphaBlend,
 				SamplerState.PointClamp, 
 				null, null, null,
 				camera2d.getTransformation());
-
+				
 			tileMap.Draw (spriteBatch, camera2d);
 
 			player.Draw(spriteBatch);
+
+			crossHair.Draw (spriteBatch);
+
 			spriteBatch.End ();
+
+			//DrawHUD ();
 
 			//TODO: Add your drawing code here
 			base.Draw (gameTime);
 		}
+
+		private void DrawHUD ()
+		{
+			spriteBatch.Begin ();
+
+			Vector2 pos = new Vector2 (mouseState.X, mouseState.Y);
+			spriteBatch.Draw (cross, pos, null, Color.White, 0, new Vector2(cross.Width/2, cross.Height/2), 0.8f, SpriteEffects.None, 0);
+
+			spriteBatch.End ();
+		}
+
+//		private void DrawText()
+//		{
+//			spriteBatch.DrawString(font, "Mouse Pos: " + crossHair.Position.X + ", " + crossHair.Position.Y, new Vector2(camera2d.Position.X - camera2d.ViewPortSize.X/2 + 45 , 
+//				camera2d.Position.Y - camera2d.ViewPortSize.Y/2 + 45 ), Color.White);
+//		}
 
 		#endregion
 	}

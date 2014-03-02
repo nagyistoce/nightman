@@ -45,8 +45,10 @@ namespace Night
 			return Transform;
 		}
 
-		public void Update(GameTime gameTime)
+		public void Update(GameTime gameTime, Vector2 focusPos)
 		{
+			Focus = focusPos;
+
 			Origin = ScreenCenter / Zoom;
 
 			// Move the Camera to the position that it needs to go
@@ -56,19 +58,14 @@ namespace Night
 			Position.Y += (Focus.Y - Position.Y) * MoveSpeed * delta;
 		}
 
-		// NON TESTE
-		public bool IsInView(Vector2 position, Texture2D texture)
+		public Vector2 getTopLeftView()
 		{
-			// If the object is not within the horizontal bounds of the screen
-			if ( (position.X + texture.Width) < (Position.X - Origin.X) || (position.X) > (Position.X + Origin.X) )
-				return false;
+			return new Vector2 (Position.X - ViewPortSize.X / 2, Position.Y - ViewPortSize.Y / 2); 
+		}
 
-			// If the object is not within the vertical bounds of the screen
-			if ((position.Y + texture.Height) < (Position.Y - Origin.Y) || (position.Y) > (Position.Y + Origin.Y))
-				return false;
-
-			// In View
-			return true;
+		public Vector2 getWorldPosition(Vector2 screenPosition)
+		{
+			return Vector2.Transform (screenPosition, Matrix.Invert(this.getTransformation()));
 		}
 	}
 }
