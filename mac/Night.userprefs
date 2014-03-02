@@ -1,0 +1,18 @@
+﻿<Properties MonoDevelop.MonoMac.LastXamMacNagTime="01/03/2014 11:16:46 PM">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Night/Classes/TileEngine/TileMap.cs">
+    <Files>
+      <File FileName="Night/GameScene.cs" Line="142" Column="5" />
+      <File FileName="Night/Classes/Camera2D.cs" Line="72" Column="4" />
+      <File FileName="Night/Classes/TileEngine/Tile.cs" Line="12" Column="36" />
+      <File FileName="Night/Classes/TileEngine/MapCell.cs" Line="33" Column="4" />
+      <File FileName="Night/Classes/TileEngine/TileMap.cs" Line="19" Column="28" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/samdesrochers/Projects/Night/Night/Classes/Camera.cs" line="78" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
