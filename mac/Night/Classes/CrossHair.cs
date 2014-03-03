@@ -20,7 +20,7 @@ namespace Night
 
 		public void Draw(SpriteBatch batcher)
 		{
-			batcher.Draw (Texture, Position, null, Color.White, 0, new Vector2(Texture.Width/2, Texture.Height/2), 0.8f, SpriteEffects.None, 0);
+			batcher.Draw (Texture, Position, null, Color.White * 0.5f, 0, new Vector2(Texture.Width/2, Texture.Height/2), 0.8f, SpriteEffects.None, 0);
 		}
 	}
 }

@@ -106,8 +106,8 @@ namespace Night
 			sourceRect = new Rectangle(currentFrame * FrameWidth, 0, FrameWidth, FrameHeight);
 
 			// Grab the correct frame in the image strip by multiplying the currentFrame index by the frame width
-			destinationRect = new Rectangle((int)Position.X - (int)(FrameWidth * scale) / 2,
-				(int)Position.Y - (int)(FrameHeight * scale) / 2,
+			destinationRect = new Rectangle(Tile.TileWidth/2 + (int)Position.X - (int)(FrameWidth * scale) / 2,
+				Tile.TileWidth/2 + (int)Position.Y - (int)(FrameHeight * scale) / 2,
 				(int)(FrameWidth * scale),
 				(int)(FrameHeight * scale));
 		}
@@ -125,6 +125,24 @@ namespace Night
 					color, 
 					rotation, 
 					new Vector2 (FrameWidth / 2, FrameHeight / 2), 
+					SpriteEffects.None,
+					0);
+			}
+		}
+
+		// Draw the Animation Strip
+		public void Draw(SpriteBatch spriteBatch, float rotation, Vector2 center)
+		{
+			// Only draw the animation when we are active
+			if (Active)
+			{
+				spriteBatch.Draw (
+					spriteStrip, 
+					destinationRect, 
+					sourceRect, 
+					color, 
+					rotation, 
+					center, 
 					SpriteEffects.None,
 					0);
 			}

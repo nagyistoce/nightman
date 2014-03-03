@@ -27,7 +27,7 @@ namespace Night
 		{
 			Zoom = 1.0f;
 			Rotation = 0.0f;
-			MoveSpeed = 1.25f;
+			MoveSpeed = 2.5f;
 			Position = Vector2.Zero;
 
 			ViewPortSize = viewPortSize;

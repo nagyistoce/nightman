@@ -35,17 +35,17 @@ namespace Night
 		KeyboardState currentKeyboardState;
 		//KeyboardState previousKeyboardState;
 		MouseState mouseState;
-		
+		Vector2 mousePosition;
 
 		CrossHair crossHair;
 
-		Player player;
-
-		Texture2D cross;
+		Archer archer;
+		float playerMoveSpeed = 12.0f;
 
 		// Textures Test ----
 
 		TileMap tileMap;
+		Soldier soldier;
 
 
 		#endregion
@@ -67,7 +67,8 @@ namespace Night
 			camera2d = new Camera2D ();
 			crossHair = new CrossHair ();
 		
-			player = new Player ();
+			archer = new Archer ();
+			soldier = new Soldier ();
 
 			base.Initialize ();
 		}
@@ -76,9 +77,6 @@ namespace Night
 		{
 			// Create a new SpriteBatch, which can be use to draw textures.
 			spriteBatch = new SpriteBatch (graphics.GraphicsDevice);
-
-			// Create font batch
-			//SpriteFont bla = Content.Load<SpriteFont>("myfont");
 
 			// Camera loading
 			Vector2 viewPort = new Vector2 (graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
@@ -94,18 +92,22 @@ namespace Night
 
 			// Load the player resources
 			Animation playerAnimation = new Animation();
-			Texture2D playerTexture = Content.Load<Texture2D>("shipAnimation");
-			playerAnimation.Initialize(playerTexture, Vector2.Zero, 115, 69, 8, 30, Color.White, 0.75f, true);
+			Texture2D playerTexture = Content.Load<Texture2D>("concept1");
+			playerAnimation.Initialize(playerTexture, Vector2.Zero, 64, 64, 4, 30, Color.White, 1.0f, true);
 
 			// Player loading
-			Vector2 playerPosition = new Vector2 (128*Tile.TileWidth/2, 800);
-			player.Initialize(playerAnimation, playerPosition);
-			camera2d.Position = playerPosition;
+			Vector2 playerPosition = new Vector2 (0,0);
+			archer.Initialize(playerAnimation, playerPosition);
+			WeaponFactory.CreateWeapon (archer, Content);
 
-			//crossHair.CrossAnim = playerAnimation;
+
+			// Camera startup
+			camera2d.Position = archer.Position;
+			soldier.Initialize (graphics.GraphicsDevice);
 
 			// Other
 			tileMap.LoadFile ();
+			WeaponFactory.LoadTextures (Content);
 		}
 
 		#endregion
@@ -117,32 +119,39 @@ namespace Night
 			//previousKeyboardState = currentKeyboardState;
 			currentKeyboardState = Keyboard.GetState();
 			mouseState = Mouse.GetState ();
+			mousePosition = camera2d.getWorldPosition(new Vector2 (mouseState.X, mouseState.Y));
 
-			UpdatePlayer (gameTime);
+			UpdateUnit (gameTime);
 			UpdateCamera (gameTime);
 			UpdateCrossHair ();
+
+			soldier.Update (gameTime, mousePosition);
 
 			base.Update (gameTime);
 		}
 
-		private void UpdatePlayer(GameTime gameTime)
+		private void UpdateUnit(GameTime gameTime)
 		{
-			player.Update(gameTime);
+			archer.Update(gameTime, mousePosition);
 
-			float playerMoveSpeed = 12.0f;
+			// Fire only every interval we set as the fireTime
+			if (currentKeyboardState.IsKeyDown(Keys.Space))
+			{
+				archer.Attack (gameTime.TotalGameTime);
+			}
 
 			// Use the Keyboard / Dpad
-			if (currentKeyboardState.IsKeyDown(Keys.Left)) {
-				player.Position.X -= playerMoveSpeed;
+			if (currentKeyboardState.IsKeyDown(Keys.A)) {
+				archer.Position.X -= playerMoveSpeed;
 			}
-			if (currentKeyboardState.IsKeyDown(Keys.Right)) {
-				player.Position.X += playerMoveSpeed;
+			if (currentKeyboardState.IsKeyDown(Keys.D)) {
+				archer.Position.X += playerMoveSpeed;
 			}
-			if (currentKeyboardState.IsKeyDown(Keys.Up)) {
-				player.Position.Y -= playerMoveSpeed;
+			if (currentKeyboardState.IsKeyDown(Keys.W)) {
+				archer.Position.Y -= playerMoveSpeed;
 			}
-			if (currentKeyboardState.IsKeyDown(Keys.Down)) {
-				player.Position.Y += playerMoveSpeed;
+			if (currentKeyboardState.IsKeyDown(Keys.S)) {
+				archer.Position.Y += playerMoveSpeed;
 			}
 		}
 
@@ -153,7 +162,7 @@ namespace Night
 
 		private void UpdateCamera(GameTime gameTime)
 		{
-			camera2d.Update (gameTime, player.Position);
+			camera2d.Update (gameTime, archer.Position);
 		}
 			
 		protected override void Draw (GameTime gameTime)
@@ -166,27 +175,29 @@ namespace Night
 				SamplerState.PointClamp, 
 				null, null, null,
 				camera2d.getTransformation());
-				
 			tileMap.Draw (spriteBatch, camera2d);
 
-			player.Draw(spriteBatch);
+			soldier.Draw (spriteBatch);
+			DrawUnit (spriteBatch);
 
 			crossHair.Draw (spriteBatch);
-
 			spriteBatch.End ();
 
-			//DrawHUD ();
-
-			//TODO: Add your drawing code here
 			base.Draw (gameTime);
 		}
 
+		private void DrawUnit(SpriteBatch spriteBatch)
+		{
+			archer.Draw (spriteBatch);
+			spriteBatch.Draw (Bow.arrowTexture, archer.WeaponPosition, null, Color.White, archer.Rotation, new Vector2 (36, 36), 0.5f, SpriteEffects.None, 0);  
+		}
+			
 		private void DrawHUD ()
 		{
 			spriteBatch.Begin ();
 
-			Vector2 pos = new Vector2 (mouseState.X, mouseState.Y);
-			spriteBatch.Draw (cross, pos, null, Color.White, 0, new Vector2(cross.Width/2, cross.Height/2), 0.8f, SpriteEffects.None, 0);
+			//Vector2 pos = new Vector2 (mouseState.X, mouseState.Y);
+			//spriteBatch.Draw (cross, pos, null, Color.White, 0, new Vector2(cross.Width/2, cross.Height/2), 0.8f, SpriteEffects.None, 0);
 
 			spriteBatch.End ();
 		}
